@@ -1,13 +1,14 @@
 # stocks
-臻益家库存管理系统
-目录结构：
-|--application – 存放程序代码
-|--config – 存放程序配置
-|--db – 存放数据库备份内容
-|--library – 存放框架代码
-|--public – 存放静态文件 
-|--scripts – 存放命令行工具
-|--tmp – 存放临时数据 
+臻益家库存管理系统  
+
+目录结构：  
+|--application – 存放程序代码  
+|--config – 存放程序配置  
+|--db – 存放数据库备份内容  
+|--library – 存放框架代码  
+|--public – 存放静态文件   
+|--scripts – 存放命令行工具  
+|--tmp – 存放临时数据   
 
 命名规范：
 1. MySQL的表名需小写并采用复数形式，如items,cars
