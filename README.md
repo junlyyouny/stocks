@@ -30,7 +30,7 @@ nginx配置：
 apache配置：
 -----------  
 1. apache服务器需设置 RewriteEngine on  
-2. 在public目录放入.htaccess文件内容如下  
+2. 在public目录放入.htaccess文件  
     \<IfModule mod_rewrite.c>  
         RewriteEngine on  
         #如果文件存在就直接访问目录不进行RewriteRule  
