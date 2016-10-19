@@ -22,7 +22,7 @@
 nginx配置：
 ----------  
 >if ( !-e $request_filename ){  
-        rewrite ^/(.*)   /index.php?url=$1 last;     
+  rewrite ^/(.*)   /index.php?url=$1 last;     
 }
 
 apache配置：
