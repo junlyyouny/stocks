@@ -40,4 +40,5 @@ apache配置：
     RewriteCond %{REQUEST_FILENAME} !-d  
     #将所有其他URL重写到 index.php/URL  
     RewriteRule ^(.*)$ index.php?url=$1 [PT,L]  
-</IfModule>```
+</IfModule>
+```
