@@ -58,7 +58,7 @@ function unregisterGlobals(){
 function callHook() {
     global $url;
     $urlArray = array();
-    $urlArray = explode("/",$url);
+    $urlArray = explode('/', $url);
     if (empty($urlArray[0])) {
         $controller = 'indexs';
         $action = 'index';
@@ -66,7 +66,7 @@ function callHook() {
     } else {
         $controller = $urlArray[0];
         array_shift($urlArray);
-        $action = $urlArray[0];
+        $action = isset($urlArray[0]) && $urlArray[0] ? $urlArray[0] : 'index';
         array_shift($urlArray);
         $queryString = $urlArray;
     }

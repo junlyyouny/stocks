@@ -17,15 +17,15 @@ class SQLQuery {
 	 * @return [bool]
 	 */
 	function connect($address, $account, $pwd, $name) {
-		$this->_dbHandle = @mysql_connect($address, $account, $pwd);
-		if ($this->_dbHandle != 0) {
-			if (mysql_select_db($name, $this->_dbHandle)) {
-				return 1;
-			} else {
-				return 0;
-			}
+		$this->_dbHandle = new mysqli($address, $account, $pwd);
+		if ($this->_dbHandle->connect_errno) {
+			return false;
 		} else {
-			return 0;
+			if ($this->_dbHandle->select_db($name)) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -34,11 +34,7 @@ class SQLQuery {
 	 * @return [bool]
 	 */
 	function disconnect() {
-		if (@mysql_close($this->_dbHandle) != 0) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return $this->_dbHandle->close();
 	}
 
 	/**
