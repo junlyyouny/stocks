@@ -52,7 +52,7 @@ class SQLQuery {
 	 * @return [arr]
 	 */
 	function select($id = 0, $field = '*') {
-		$query = 'select ' . $field . ' from `'.$this->_table.'` where `id` = \''.mysql_real_escape_string($id).'\'';
+		$query = 'select ' . $field . ' from `'.$this->_table.'` where `id` = \''.$this->_dbHandle->real_escape_string($id).'\'';
 		return $this->query($query, 1);
 	}
 
@@ -63,30 +63,31 @@ class SQLQuery {
 	 * @return [arr]
 	 */
 	function query($query, $singleResult = 0) {
-		$this->_result = mysql_query($query, $this->_dbHandle);
+		$this->_result = $this->_dbHandle->query($query);
 		if (preg_match("/select/i",$query)) {
 			$result = array();
 			$table = array();
 			$field = array();
 			$tempResults = array();
-			$numOfFields = mysql_num_fields($this->_result);
+			$numOfFields = $this->_result->field_count;
+			$fetchFields = $this->_result->fetch_fields();
 			for ($i = 0; $i < $numOfFields; ++$i) {
-				array_push($table,mysql_field_table($this->_result, $i));
-				array_push($field,mysql_field_name($this->_result, $i));
+				array_push($table, $fetchFields[$i]->table);
+				array_push($field, $fetchFields[$i]->name);
 			}
-			while ($row = mysql_fetch_row($this->_result)) {
+			while ($row = $this->_result->fetch_row()) {
 				for ($i = 0;$i < $numOfFields; ++$i) {
 					$table[$i] = trim(ucfirst($table[$i]),"s");
 					$tempResults[$table[$i]][$field[$i]] = $row[$i];
 				}
 				if ($singleResult == 1) {
-					mysql_free_result($this->_result);
+					$this->freeResult();
 					return $tempResults;
 				}
-				array_push($result,$tempResults);
+				array_push($result, $tempResults);
 			}
-			mysql_free_result($this->_result);
-			return($result);
+			$this->freeResult();
+			return $result;
 		}
 	}
 
@@ -95,7 +96,7 @@ class SQLQuery {
 	 * @return [int]
 	 */
 	function getNumRows() {
-		return mysql_num_rows($this->_result);
+		return $this->_result->num_rows;
 	}
 
 	/**
@@ -103,7 +104,8 @@ class SQLQuery {
 	 * @return [bool]
 	 */
 	function freeResult() {
-		mysql_free_result($this->_result);
+		$this->_result->free();
+		return $this->disconnect();
 	}
 
 	/**
@@ -111,6 +113,6 @@ class SQLQuery {
 	 * @return [str]
 	 */
 	function getError() {
-		return mysql_error($this->_dbHandle);
+		return $this->_dbHandle->error;
 	}
 }

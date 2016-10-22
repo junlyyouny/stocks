@@ -10,7 +10,6 @@ class StocksController extends Controller {
 	 */
 	function stock() {
 		$this->set('title', '库存 - 库存管理系统');
-		// echo $this->_action;exit;
 		$this->template();
 	}
 
@@ -33,9 +32,13 @@ class StocksController extends Controller {
 	}
 
 	function add() {
-		$todo = $_POST['todo'];
-		$this->set('todo',$this->Item->query('insert into items (item_name) values (\''.mysql_real_escape_string($todo).'\')'));
-		$this->template();
+		// $res = $this->Stock->query('insert into stocks (goods_num,bar_code,amount,add_time) values (236,23655,1,'.time().')');
+		// $res = $this->Stock->selectAll();
+		$res = $this->Stock->select(2);
+		print_r($res);
+		// $todo = $_POST['todo'];
+		// $this->set('todo',$this->Item->query('insert into items (item_name) values (\''.mysql_real_escape_string($todo).'\')'));
+		// $this->template();
 	}
 
 	function delete($id) {

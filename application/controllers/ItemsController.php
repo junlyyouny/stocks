@@ -3,7 +3,7 @@
  * 示例
  */
 class ItemsController extends Controller {
-	function view($id = null,$name = null) {
+	function view($id = 1,$name = null) {
 		$this->set('title',$name.' - My Todo List App');
 		$this->set('todo',$this->Item->select($id));
 		$this->template();

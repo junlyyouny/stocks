@@ -53,6 +53,26 @@ function unregisterGlobals(){
 }
  
 /**
+ * 定义get参数，避免notice错误
+ * @param $str
+ * @return blend
+ */
+function _get($str = '') {
+	$res = empty($_GET[$str]) ? '' : $_GET[$str];
+	return $res;
+}
+
+/**
+ * 定义post参数，避免notice错误
+ * @param $str
+ * @return blend
+ */                                                     
+function _post($str = '') {                              
+        $res = empty($_POST[$str]) ? '' : $_POST[$str];   
+        return $res;                                    
+}
+
+/**
  * 主请求方法，主要目的拆分URL请求
  */
 function callHook() {
