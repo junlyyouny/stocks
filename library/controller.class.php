@@ -35,4 +35,8 @@ class Controller {
 		echo '</script>';
 		exit;
 	}
+
+	public function isPost() {
+		return $_SERVER['REQUEST_METHOD'] == 'POST';
+	}
 }

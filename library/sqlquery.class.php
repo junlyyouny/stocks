@@ -77,7 +77,7 @@ class SQLQuery {
 			}
 			while ($row = $this->_result->fetch_row()) {
 				for ($i = 0;$i < $numOfFields; ++$i) {
-					$table[$i] = trim(ucfirst($table[$i]),"s");
+					$table[$i] = trim(ucfirst($table[$i]),'s');
 					$tempResults[$table[$i]][$field[$i]] = $row[$i];
 				}
 				if ($singleResult == 1) {

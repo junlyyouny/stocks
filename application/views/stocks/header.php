@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="臻益家-库存管理系统">
 	<meta name="author" content="junly">
-	<!-- <link rel="icon" href="/favicon.ico"> -->
+	<link rel="icon" href="/favicon.ico">
 	<title><?php echo $title; ?></title>
 	<!-- Bootstrap core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">

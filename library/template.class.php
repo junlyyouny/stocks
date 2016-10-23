@@ -39,8 +39,8 @@ class Template {
 		}else{
 			include ($templateDir . $templateSubDir . $this->_action . '.php');
 		}
-		if (file_exists($templateDir . $this->_controller . 'footer.php')) {
-			include ($templateDir . $this->_controller . 'footer.php');
+		if (file_exists($templateDir . $templateSubDir . 'footer.php')) {
+			include ($templateDir . $templateSubDir . 'footer.php');
 		}
 	}
 }

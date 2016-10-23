@@ -43,7 +43,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p>The template for <a href="http://www.bootcss.com/">Bootstrap</a>, by <a href="javascript:;">@junly</a>.</p>
+              <p>The template for <a href="http://www.bootcss.com/" target="_blank">Bootstrap</a>, by <a href="javascript:;">@junly</a>.</p>
             </div>
           </div>
 

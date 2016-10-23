@@ -68,8 +68,8 @@ function _get($str = '') {
  * @return blend
  */                                                     
 function _post($str = '') {                              
-        $res = empty($_POST[$str]) ? '' : $_POST[$str];   
-        return $res;                                    
+    $res = empty($_POST[$str]) ? '' : $_POST[$str];   
+    return $res;                                    
 }
 
 /**

@@ -3,14 +3,15 @@
     <div class="row">
         <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1">
             <h1 class="page-header">入库信息</h1>
-            <form class="form-inline" role="form">
+            <div class="alert-warning error_info"></div>
+            <form class="form-inline input_from" role="form" method="post">
                 <div class="form-group">
                     <label class="sr-only" for="goodsNum">商品编码</label>
                     <input type="text" class="form-control" id="goodsNum" name="goodsNum" placeholder="商品编码"></div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">-</div>
-                        <input class="form-control" type="number" name="barcode" placeholder="条形码"></div>
+                        <input class="form-control" type="text" id="barcode" name="barcode" placeholder="条形码"></div>
                 </div>
                 <button type="submit" class="btn btn-primary">添加</button>
             </form>
