@@ -19,14 +19,17 @@ class StocksController extends Controller {
 	 */
 	public function storage() {
 		$this->set('title', '入库 - 库存管理系统');
-		if ($this->isPost()) {
+		$goodsNum = _post('goodsNum');
+		if ($this->isPost() && $goodsNum) {
+			$barcode = _post('barcode');
 			$_SESSION['storage_info'][] = [
-				'goodsNum' => _post('goodsNum'),
-				'barcode' => _post('barcode'),
+				'goodsNum' => $goodsNum,
+				'barcode' => $barcode,
 				'addTime' => date('Y-m-d H:i:s'),
 			];
-			var_dump($_SESSION);
 		}
+		$this->set('goodsNum', $goodsNum);
+		$this->set('storageInfo', getSession('storage_info'));
 		$this->template();
 	}
 
@@ -38,19 +41,35 @@ class StocksController extends Controller {
 		$this->set('title', '出库 - 库存管理系统');
 		$this->template();
 	}
-
+	
+	/**
+	 * 批量入库
+	 * @param  [int]  $id
+	 * @return [void]
+	 */
 	public function add() {
-		// $res = $this->Stock->query('insert into stocks (goods_num,bar_code,amount,add_time) values (236,23655,1,'.time().')');
-		// $res = $this->Stock->selectAll();
-		$res = $this->Stock->select(2);
+		
+		$res = $this->Stock->insertDatas();
 		print_r($res);
-		// $todo = $_POST['todo'];
-		// $this->set('todo',$this->Item->query('insert into items (item_name) values (\''.mysql_real_escape_string($todo).'\')'));
-		// $this->template();
 	}
 
+	/**
+	 * 删除单条数据
+	 * @param  [int]  $id
+	 * @return [void]
+	 */
 	public function delete($id) {
 		$this->set('todo',$this->Item->query('delete from items where id = \''.mysql_real_escape_string($id).'\''));
 		$this->template();
+	}
+	
+	/**
+	 * 待入库数据删除
+	 * @param  [int]  $id
+	 * @return [void]
+	 */
+	public function del($id) {
+		unset($_SESSION['storage_info'][$id]);
+		$this->jump('/stocks/storage');
 	}
 }

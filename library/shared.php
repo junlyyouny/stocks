@@ -73,6 +73,16 @@ function _post($str = '') {
 }
 
 /**
+ * 定义session参数，避免notice错误
+ * @param $str
+ * @return blend
+ */                                                     
+function getSession($str = '') {                              
+    $res = empty($_SESSION[$str]) ? '' : $_SESSION[$str];   
+    return $res;                                    
+}
+
+/**
  * 主请求方法，主要目的拆分URL请求
  */
 function callHook() {
@@ -120,4 +130,5 @@ function __autoload($className) {
 setReporting();
 removeMagicQuotes();
 unregisterGlobals();
+session_start();
 callHook();

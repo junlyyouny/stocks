@@ -115,4 +115,27 @@ class SQLQuery {
 	function getError() {
 		return $this->_dbHandle->error;
 	}
+
+	/**
+	 * 批量插入数据
+	 * @param  [array]  $data
+	 * @return [bool]
+	 */
+	function insert($data = []) {
+		if (empty($data)) {
+			return false;
+		}
+		$query = 'INSERT INTO `' . $this->_table . '`';
+		$fields = implode(',', array_keys($data[0]));
+		$query .= '(' .$fields . ') VALUES ';
+		foreach ($data as $key => $value) {
+			$values = implode(',', array_values($value));
+			$query .= ' ('. $values . ')';
+			if ($key > 0 && $key < count($data)) {
+				$query .= ',';
+			}
+		}
+		return $this->query($query);
+	}
+
 }
