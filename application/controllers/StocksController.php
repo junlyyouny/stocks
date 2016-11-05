@@ -10,6 +10,11 @@ class StocksController extends Controller {
 	 */
 	public function stock() {
 		$this->set('title', '库存 - 库存管理系统');
+		$data = $this->Stock->selectAll();
+		$this->set('data', $data);
+		$curPage = _get('page');
+		$page = $this->page($curPage, 10);
+		$this->set('page', $page);
 		$this->template();
 	}
 
@@ -48,9 +53,9 @@ class StocksController extends Controller {
 	 * @return [void]
 	 */
 	public function add() {
-		
-		$res = $this->Stock->insertDatas();
-		print_r($res);
+		$this->Stock->insertDatas();
+		unset($_SESSION['storage_info']);
+		$this->jump('/stocks/stock');
 	}
 
 	/**
@@ -59,8 +64,8 @@ class StocksController extends Controller {
 	 * @return [void]
 	 */
 	public function delete($id) {
-		$this->set('todo',$this->Item->query('delete from items where id = \''.mysql_real_escape_string($id).'\''));
-		$this->template();
+		$this->Stock->delete($id);
+		$this->jump('/stocks/stock');
 	}
 	
 	/**

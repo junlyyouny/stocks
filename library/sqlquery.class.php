@@ -56,6 +56,26 @@ class SQLQuery {
 		return $this->query($query, 1);
 	}
 
+	/** 
+	 * 删除数据表指定列
+	 * @param  [int] $id
+	 * @return [arr]
+	 */
+	function delete($id = 0) {
+		$query = 'DELETE FROM `'.$this->_table.'` WHERE `id` = \''.$this->_dbHandle->real_escape_string($id).'\'';
+		return $this->query($query, 1);
+	}
+
+	/** 
+	 * 查询数据表指定列内容
+	 * @param  [int] $id
+	 * @return [arr]
+	 */
+	function selectByBarCode($barCode = 0, $field = '*') {
+		$query = 'select ' . $field . ' from `'.$this->_table.'` where `bar_code` = \''.$this->_dbHandle->real_escape_string($barCode).'\'';
+		return $this->query($query, 1);
+	}
+
 	/**
 	 * 自定义SQL查询语句
 	 * @param  [str]  $query
@@ -77,16 +97,14 @@ class SQLQuery {
 			}
 			while ($row = $this->_result->fetch_row()) {
 				for ($i = 0;$i < $numOfFields; ++$i) {
-					$table[$i] = trim(ucfirst($table[$i]),'s');
+					$table[$i] = rtrim(ucfirst($table[$i]),'s');
 					$tempResults[$table[$i]][$field[$i]] = $row[$i];
 				}
 				if ($singleResult == 1) {
-					$this->freeResult();
 					return $tempResults;
 				}
 				array_push($result, $tempResults);
 			}
-			$this->freeResult();
 			return $result;
 		}
 	}
@@ -125,17 +143,45 @@ class SQLQuery {
 		if (empty($data)) {
 			return false;
 		}
+		$data = array_values($data);
 		$query = 'INSERT INTO `' . $this->_table . '`';
 		$fields = implode(',', array_keys($data[0]));
 		$query .= '(' .$fields . ') VALUES ';
-		foreach ($data as $key => $value) {
+		foreach ($data as $value) {
 			$values = implode(',', array_values($value));
-			$query .= ' ('. $values . ')';
-			if ($key > 0 && $key < count($data)) {
-				$query .= ',';
-			}
+			$query .= ' ('. $values . '),';
 		}
+		$query = rtrim($query, ',');
+		$query .= ';';
 		return $this->query($query);
 	}
 
+	/**
+	 * 批量update数据
+	 * @param  [array]  $data
+	 * @return [bool]
+	 */
+	function update($data = []) {
+		if (empty($data)) {
+			return false;
+		}
+		$query = 'UPDATE `' . $this->_table . '` SET ';
+		$ids = implode(',', array_keys($data));
+		$fields = [];
+		foreach ($data as $id => $info) {
+			foreach ($info as $field => $value) {
+				$fields[$field][$id] = $value;
+			}
+		}
+		foreach ($fields as $field => $value) {
+			$query .= ' `' . $field . '` = CASE `id`';
+			foreach ($value as $id => $value) {
+				$query .= ' WHEN ' . $id . ' THEN ' . $value;
+			}
+			$query .= ' END,';
+		}
+		$query = rtrim($query, ',');
+		$query .= ' WHERE id IN (' . $ids . ');';
+		return $this->query($query);
+	}
 }

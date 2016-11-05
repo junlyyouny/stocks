@@ -34,8 +34,28 @@ class Stock extends Model {
 				
 			}
 		}
-		print_r($data);exit;
-		// 检测数据是否存在，存在则调整库存，不存在则新增
-		return $this->insert();
+		$up_data = [];
+		// 检测数据是否存在
+		$goods_bar = array_column($data, 'bar_code');
+		foreach ($goods_bar as $key => $barCode) {
+			$hade_info = $this->selectByBarCode($barCode);
+			if ($hade_info) {
+				$up_data[$hade_info['Stock']['id']] = [
+					'amount' => $hade_info['Stock']['amount'] + $data[$key]['amount'],
+					'add_time' => time()
+				];
+				// unset $data info
+				unset($data[$key]);
+			}
+		}
+		// isset $data do insert
+		if ($data) {
+			$do_insert = $this->insert($data);
+		}
+		// isset $up_data do update
+		if ($up_data) {
+			$do_update = $this->update($up_data);
+		}
+		return true;
 	}
 }
