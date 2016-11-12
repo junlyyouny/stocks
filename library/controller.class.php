@@ -70,7 +70,7 @@ class Controller {
 		$page = $page < 1 ? 1 : $page;
 		//当前页大于总页数 则为总页数
 		$page = $page > $pages ? $pages : $page;
-		//页数小当前页 则为当前页
+		//页数小于当前页 则为当前页
 		$pages = $pages < $page ? $page : $pages;
 
 		//计算开始页
@@ -98,7 +98,7 @@ class Controller {
 		$_pageHtml .= '<div class="col-xs-6 col-xs-offset-3 col-sm-8 col-sm-offset-4 col-md-7 col-md-offset-4">';
 		$_pageHtml .= '<nav>';
 		$_pageHtml .= '<ul class="pagination">';
-		if ($_start == 1) {
+		if ($_start == $page) {
 			$_pageHtml .= '<li class="disabled"> <a>';
 		} else {
 			$_pageHtml .= '<li> <a href="'.$url.'?page='.($page - 1).'">';
@@ -115,7 +115,7 @@ class Controller {
 		if($page == $_end){
 			$_pageHtml .= '<li class="disabled"> <a>&raquo;</a> </li>';
 		} else {
-			$_pageHtml .= '<li> <a href="'.$url.'?page='.($page+1).'">&raquo;</a> </li>';
+			$_pageHtml .= '<li> <a href="'.$url.'?page='.($page + 1).'">&raquo;</a> </li>';
 		}
 		$_pageHtml .= '</ul> </nav> </div> </div>'; 
 		return $_pageHtml;

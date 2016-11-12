@@ -58,4 +58,5 @@ class Stock extends Model {
 		}
 		return true;
 	}
+	
 }

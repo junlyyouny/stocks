@@ -16,7 +16,7 @@ class SQLQuery {
 	 * @param  [str] $name    [数据库名]
 	 * @return [bool]
 	 */
-	function connect($address, $account, $pwd, $name) {
+	public function connect($address, $account, $pwd, $name) {
 		$this->_dbHandle = new mysqli($address, $account, $pwd);
 		if ($this->_dbHandle->connect_errno) {
 			return false;
@@ -33,7 +33,7 @@ class SQLQuery {
 	 * 中断数据库连接
 	 * @return [bool]
 	 */
-	function disconnect() {
+	public function disconnect() {
 		return $this->_dbHandle->close();
 	}
 
@@ -41,8 +41,20 @@ class SQLQuery {
 	 * 查询所有数据表内容
 	 * @return [arr]
 	 */
-	function selectAll() {
+	public function selectAll() {
 		$query = 'select * from `'.$this->_table.'`';
+		return $this->query($query);
+	}
+
+	/**
+	 * 根据条件查询数据表内容
+	 * @param  [str]  $where
+	 * @param  [str]  $field
+	 * @param  integer $singleResult [只取一条]
+	 * @return [arr]
+	 */
+	public function selectByWhere($where = 1, $field = '*') {
+		$query = 'select ' . $field . ' from `'.$this->_table.'` where ' . $where;
 		return $this->query($query);
 	}
 
@@ -51,7 +63,7 @@ class SQLQuery {
 	 * @param  [int] $id
 	 * @return [arr]
 	 */
-	function select($id = 0, $field = '*') {
+	public function select($id = 0, $field = '*') {
 		$query = 'select ' . $field . ' from `'.$this->_table.'` where `id` = \''.$this->_dbHandle->real_escape_string($id).'\'';
 		return $this->query($query, 1);
 	}
@@ -61,17 +73,18 @@ class SQLQuery {
 	 * @param  [int] $id
 	 * @return [arr]
 	 */
-	function delete($id = 0) {
+	public function delete($id = 0) {
 		$query = 'DELETE FROM `'.$this->_table.'` WHERE `id` = \''.$this->_dbHandle->real_escape_string($id).'\'';
 		return $this->query($query, 1);
 	}
 
 	/** 
 	 * 查询数据表指定列内容
-	 * @param  [int] $id
+	 * @param  [str] $barCode
+	 * @param  [str]  $field
 	 * @return [arr]
 	 */
-	function selectByBarCode($barCode = 0, $field = '*') {
+	public function selectByBarCode($barCode = 0, $field = '*') {
 		$query = 'select ' . $field . ' from `'.$this->_table.'` where `bar_code` = \''.$this->_dbHandle->real_escape_string($barCode).'\'';
 		return $this->query($query, 1);
 	}
@@ -79,12 +92,12 @@ class SQLQuery {
 	/**
 	 * 自定义SQL查询语句
 	 * @param  [str]  $query
-	 * @param  integer $singleResult [只取一条]
+	 * @param  [integer] $singleResult [只取一条]
 	 * @return [arr]
 	 */
-	function query($query, $singleResult = 0) {
+	public function query($query, $singleResult = 0) {
 		$this->_result = $this->_dbHandle->query($query);
-		if (preg_match("/select/i",$query)) {
+		if ($this->_result && preg_match("/select/i",$query)) {
 			$result = array();
 			$table = array();
 			$field = array();
@@ -98,6 +111,10 @@ class SQLQuery {
 			while ($row = $this->_result->fetch_row()) {
 				for ($i = 0;$i < $numOfFields; ++$i) {
 					$table[$i] = rtrim(ucfirst($table[$i]),'s');
+					// 当table名为空时用$i替换
+					if (!$table[$i]) {
+						$table[$i] = $i;
+					}
 					$tempResults[$table[$i]][$field[$i]] = $row[$i];
 				}
 				if ($singleResult == 1) {
@@ -107,13 +124,14 @@ class SQLQuery {
 			}
 			return $result;
 		}
+		return false;
 	}
 
 	/**
 	 * 返回结果集行数
 	 * @return [int]
 	 */
-	function getNumRows() {
+	public function getNumRows() {
 		return $this->_result->num_rows;
 	}
 
@@ -121,7 +139,7 @@ class SQLQuery {
 	 * 释放结果集内存
 	 * @return [bool]
 	 */
-	function freeResult() {
+	public function freeResult() {
 		$this->_result->free();
 		return $this->disconnect();
 	}
@@ -130,7 +148,7 @@ class SQLQuery {
 	 * 返回MySQL操作错误信息
 	 * @return [str]
 	 */
-	function getError() {
+	public function getError() {
 		return $this->_dbHandle->error;
 	}
 
@@ -139,7 +157,7 @@ class SQLQuery {
 	 * @param  [array]  $data
 	 * @return [bool]
 	 */
-	function insert($data = []) {
+	public function insert($data = []) {
 		if (empty($data)) {
 			return false;
 		}
@@ -161,7 +179,7 @@ class SQLQuery {
 	 * @param  [array]  $data
 	 * @return [bool]
 	 */
-	function update($data = []) {
+	public function update($data = []) {
 		if (empty($data)) {
 			return false;
 		}
@@ -183,5 +201,20 @@ class SQLQuery {
 		$query = rtrim($query, ',');
 		$query .= ' WHERE id IN (' . $ids . ');';
 		return $this->query($query);
+	}
+	
+	/**
+	 * 分页查询
+	 * @param  [str]  $where
+	 * @param  [int]  $rows 每页个数
+	 * @param  [str]  $field
+	 * @return [void]
+	 */
+	public function pageList($where = 1, $rows = 10, $field = '*') {
+		$info = $this->query('SELECT SQL_CALC_FOUND_ROWS ' . $field . ' from `'.$this->_table . '` where ' . $where . ' limit ' . $rows);
+		$total = $this->query('SELECT FOUND_ROWS() as total ', 1);
+		// 记录查询数据的总页数
+		$_SESSION[$this->_table]['total'] = ceil($total[0]['total'] / $rows);
+		return $info;
 	}
 }

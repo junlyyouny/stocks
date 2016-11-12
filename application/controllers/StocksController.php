@@ -10,11 +10,15 @@ class StocksController extends Controller {
 	 */
 	public function stock() {
 		$this->set('title', '库存 - 库存管理系统');
-		$data = $this->Stock->selectAll();
-		$this->set('data', $data);
 		$curPage = _get('page');
-		$page = $this->page($curPage, 10);
+		$data = $this->Stock->getPageList('amount > 0 order by id desc', $curPage);
+		if (count($data) < 10) {
+			$page = '';
+		} else {
+			$page = $this->page($curPage, $_SESSION['stocks']['total']);
+		}
 		$this->set('page', $page);
+		$this->set('data', $data);
 		$this->template();
 	}
 
