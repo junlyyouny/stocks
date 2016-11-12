@@ -9,7 +9,7 @@ class Template {
 	protected $_controller;
 	protected $_action;
 
-	function __construct($controller,$action) {
+	public function __construct($controller,$action) {
 		$this->_controller = $controller;
 		$this->_action = $action;
 	}
@@ -19,7 +19,7 @@ class Template {
 	 * @param [str] $name  [变量名]
 	 * @param [arr] $value [变量值]
 	 */
-	function set($name,$value) {
+	public function set($name,$value) {
 		$this->variables[$name] = $value;
 	}
 
@@ -27,7 +27,7 @@ class Template {
 	 * 显示模板
 	 * @return [obj]
 	 */
-	function render($path = '') {
+	public function render($path = '') {
 		extract($this->variables);
 		$templateDir = ROOT.DS. 'application' .DS. 'views' .DS;
 		$templateSubDir = strtolower($this->_controller) .DS;

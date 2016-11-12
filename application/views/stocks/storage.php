@@ -3,8 +3,8 @@
     <div class="row">
         <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1">
             <h1 class="page-header">入库信息</h1>
-            <div class="alert-warning error_info"></div>
-            <form class="form-inline input_from" role="form" method="post">
+            <div class="alert-warning error_info <?php if ($errorInfo) echo 'alert'; ?>"><?php echo $errorInfo; ?></div>
+            <form class="form-inline storage_from" role="form" method="post">
                 <div class="form-group">
                     <label class="sr-only" for="goodsNum">商品编码</label>
                     <input type="text" class="form-control" id="goodsNum" name="goodsNum" placeholder="商品编码" value="<?php echo $goodsNum; ?>"></div>

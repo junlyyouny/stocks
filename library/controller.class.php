@@ -9,7 +9,7 @@ class Controller {
 	protected $_action;
 	protected $_template;
 
-	function __construct($model, $controller, $action) {
+	public function __construct($model, $controller, $action) {
 		$this->_controller = $controller;
 		$this->_action = $action;
 		$this->_model = $model;
@@ -33,7 +33,7 @@ class Controller {
 		$this->_template->render($name);
 	}
 
-	function __destruct() {
+	public function __destruct() {
 		
 	}
 

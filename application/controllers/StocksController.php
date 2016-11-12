@@ -28,32 +28,28 @@ class StocksController extends Controller {
 	 */
 	public function storage() {
 		$this->set('title', '入库 - 库存管理系统');
+		$error_info = '';
 		$goodsNum = _post('goodsNum');
 		if ($this->isPost() && $goodsNum) {
 			$barcode = _post('barcode');
-			$_SESSION['storage_info'][] = [
-				'goodsNum' => $goodsNum,
-				'barcode' => $barcode,
-				'addTime' => date('Y-m-d H:i:s'),
-			];
+			if ($goodsNum && $barcode) {
+				$_SESSION['storage_info'][] = [
+					'goodsNum' => $goodsNum,
+					'barcode' => $barcode,
+					'addTime' => date('Y-m-d H:i:s'),
+				];
+			} else {
+				$error_info = '请输入商品编码和条形码！';
+			}
 		}
+		$this->set('errorInfo', $error_info);
 		$this->set('goodsNum', $goodsNum);
 		$this->set('storageInfo', getSession('storage_info'));
-		$this->template();
-	}
-
-	/**
-	 * 出库列表
-	 * @return [void]
-	 */
-	public function delivering() {
-		$this->set('title', '出库 - 库存管理系统');
 		$this->template();
 	}
 	
 	/**
 	 * 批量入库
-	 * @param  [int]  $id
 	 * @return [void]
 	 */
 	public function add() {

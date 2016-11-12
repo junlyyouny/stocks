@@ -27,7 +27,7 @@
               <h3 class="masthead-brand">臻益家</h3>
               <ul class="nav masthead-nav">
                 <li><a href="/stocks/storage">入库</a></li>
-                <li><a href="/stocks/delivering">出库</a></li>
+                <li><a href="/sales/delivering">出库</a></li>
                 <li><a href="/stocks/stock">库存</a></li>
               </ul>
             </div>
