@@ -13,8 +13,8 @@ class SalesController extends Controller {
 		$curPage = _get('page');
 		$startTime = _get('startTime') ? strtotime(date('Y-m-d', strtotime(_get('startTime')))) : strtotime(date('Y-m-d'));
 		$endTime = _get('startTime') ? strtotime(date('Y-m-d 23:59:59', strtotime(_get('startTime')))) : strtotime(date('Y-m-d 23:59:59'));
-		$data = $this->Sale->getPageList('add_time between ' . $startTime . ' and ' . $endTime, $curPage,1);
-		if (count($data) < 1) {
+		$data = $this->Sale->getPageList('add_time between ' . $startTime . ' and ' . $endTime, $curPage);
+		if (count($data) < 10) {
 			$page = '';
 		} else {
 			$page = $this->page($curPage, $_SESSION['sales']['total']);
