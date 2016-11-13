@@ -44,19 +44,37 @@ class Stock extends Model {
 					'amount' => $hade_info['Stock']['amount'] + $data[$key]['amount'],
 					'add_time' => time()
 				];
-				// unset $data info
+				// 删除处理后多余的数据
 				unset($data[$key]);
 			}
 		}
-		// isset $data do insert
+		// 新增数组不为空则批量插入
 		if ($data) {
 			$do_insert = $this->insert($data);
 		}
-		// isset $up_data do update
+		// 更新数组不为空则批量更新
 		if ($up_data) {
 			$do_update = $this->update($up_data);
 		}
 		return true;
 	}
 	
+	/**
+	 * 根据商品编码或条形码获取数据信息
+	 * @param  [str]  $goodsNum 商品编码
+	 * @param  [str]  $barcode 条形码
+	 * @return [array]
+	 */
+	public function getStocksInfo($goodsNum = '', $barcode = '') {
+		if ($goodsNum) {
+			$stocksInfo = $this->selectByWhere('goods_num = ' . $goodsNum);
+		} elseif ($barcode) {
+			// 条形码查询为单条查询，需与多条查询结果保持一致
+			$stocksInfo[0] = $this->selectByBarCode($barcode);
+		} else {
+			$stocksInfo = [];
+		}
+		return $stocksInfo;
+	}
+
 }

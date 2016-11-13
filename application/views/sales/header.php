@@ -10,6 +10,7 @@
 	<title><?php echo $title; ?></title>
 	<!-- Bootstrap core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="http://cdn.bootcss.com/html5shiv/3.7.0/html5shiv.js"></script>
@@ -40,9 +41,9 @@
 						<a href="/sales/index">流水</a>
 					</li>
 				</ul>
-				<form class="navbar-form navbar-right">
+				<!-- <form class="navbar-form navbar-right">
 					<input type="text" class="form-control" placeholder="Search..." />
-				</form>
+				</form> -->
 			</div>
 		</div>
 	</nav>

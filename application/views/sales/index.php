@@ -2,7 +2,37 @@
     <div style="margin: 40px 0 0;"></div>
     <div class="row">
         <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1">
-            <h1 class="page-header">流水列表</h1>
+            <h1 class="page-header">查询流水</h1>
+            <div class="alert-warning error_info <?php if ($errorInfo) echo 'alert'; ?>"><?php echo $errorInfo; ?></div>
+            <form class="form-inline time_from" role="form" method="get">
+               <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <input class="form-control" type="text" name="startTime" placeholder="开始时间" value="<?php echo $startTime; ?>" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <div class="input-group date form_date" data-date-format="yyyy-mm-dd">
+                    <div class="input-group-addon">-</div>
+                    <input class="form-control" type="text" name="endTime" placeholder="结束时间" value="<?php echo $endTime ; ?>" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </span>
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+                <button type="submit" class="btn btn-primary">查询</button>
+            </form>
+            <div style="margin: 25px 0 0;border-bottom: 1px solid #eee;"></div>
+        </div>
+    </div>
+    <?php if ($data) : ?>
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1">
+            <h2 class="page-header">流水列表</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -30,4 +60,5 @@
         </div>
     </div>
     <?php echo $page; ?>
+    <?php endif; ?>
 </div>

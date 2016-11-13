@@ -11,12 +11,32 @@ class StocksController extends Controller {
 	public function stock() {
 		$this->set('title', '库存 - 库存管理系统');
 		$curPage = _get('page');
-		$data = $this->Stock->getPageList('amount > 0 order by id desc', $curPage);
-		if (count($data) < 10) {
-			$page = '';
+		$error_info = '';
+		$page = '';
+		if ($this->isPost()) {
+			// 接收查询参数
+			$goodsNum = _post('goodsNum');
+			$barcode = _post('barcode');
+			if ($goodsNum || $barcode) {
+				// 根据条件查询库存
+				$data = $this->Stock->getStocksInfo($goodsNum, $barcode);
+				if (empty($data)) {
+					$error_info = '没有库存信息！';
+				}
+			} else {
+				$error_info = '请输入库存编码或条形码！';
+			}
 		} else {
-			$page = $this->page($curPage, $_SESSION['stocks']['total']);
+			// 非筛选状态下默认展示全部
+			$data = $this->Stock->getPageList('amount > 0 order by id desc', $curPage);
+			if (count($data) > 9) {
+				$page = $this->page($curPage, $_SESSION['stocks']['total']);
+			}
+			if (empty($data)) {
+				$error_info = '没有库存信息！';
+			}
 		}
+		$this->set('errorInfo', $error_info);
 		$this->set('page', $page);
 		$this->set('data', $data);
 		$this->template();

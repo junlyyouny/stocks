@@ -41,7 +41,7 @@
                             <td><?php echo $info['barcode']; ?></td>
                             <td><?php echo $info['addTime']; ?></td>
                             <td>
-                                <a href="/stocks/del/<?php echo $key; ?>">
+                                <a href="/stocks/del/<?php echo $key; ?>" class="do_del" style="text-decoration:none;">
                                     <span class="label label-danger">删除</span>
                                 </a>
                             </td>

@@ -13,7 +13,7 @@
                         <div class="input-group-addon">or</div>
                         <input class="form-control" type="text" id="barcode" name="barcode" placeholder="条形码"></div>
                 </div>
-                <button type="submit" class="btn btn-default">添加</button>
+                <button type="submit" class="btn btn-primary">添加</button>
             </form>
             <div style="margin: 25px 0 0;border-bottom: 1px solid #eee;"></div>
         </div>
@@ -41,7 +41,7 @@
                             <td><?php echo $info['bar_code']; ?></td>
                             <td><?php echo $info['amount']; ?></td>
                             <td>
-                                <a href="/sales/del/<?php echo $key; ?>">
+                                <a href="/sales/del/<?php echo $key; ?>" class="do_del" style="text-decoration:none;">
                                     <span class="label label-danger">删除</span>
                                 </a>
                             </td>

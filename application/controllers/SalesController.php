@@ -10,15 +10,22 @@ class SalesController extends Controller {
 	 */
 	public function index() {
 		$this->set('title','流水 - 库存管理系统');
+		$error_info = '';
 		$curPage = _get('page');
-		$startTime = _get('startTime') ? strtotime(date('Y-m-d', strtotime(_get('startTime')))) : strtotime(date('Y-m-d'));
-		$endTime = _get('startTime') ? strtotime(date('Y-m-d 23:59:59', strtotime(_get('startTime')))) : strtotime(date('Y-m-d 23:59:59'));
-		$data = $this->Sale->getPageList('add_time between ' . $startTime . ' and ' . $endTime, $curPage);
+		$startTime = _get('startTime') ? date('Y-m-d', strtotime(_get('startTime'))) : date('Y-m-d');
+		$endTime = _get('endTime') ? date('Y-m-d 23:59:59', strtotime(_get('endTime'))) : date('Y-m-d 23:59:59');
+		$data = $this->Sale->getPageList('add_time between ' . strtotime($startTime) . ' and ' . strtotime($endTime), $curPage);
 		if (count($data) < 10) {
 			$page = '';
 		} else {
 			$page = $this->page($curPage, $_SESSION['sales']['total']);
 		}
+		if (empty($data)) {
+			$error_info = '没有流水信息！';
+		}
+		$this->set('startTime', $startTime);
+		$this->set('endTime', $endTime);
+		$this->set('errorInfo', $error_info);
 		$this->set('page', $page);
 		$this->set('data', $data);
 		$this->template();
@@ -56,7 +63,7 @@ class SalesController extends Controller {
 						];
 					}
 				} else {
-					$error_info = '库存不足！';
+					$error_info = '库存不足或商品不存在！';
 				}
 				
 			} else { 

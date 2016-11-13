@@ -38,13 +38,14 @@ class Sale extends Model {
 			// 构造出库数据
 			$up_data = [];
 			foreach ($stocksInfo as $key => $value) {
+				$number = $value['Stock']['amount'] - $sale_info[$value['Stock']['id']]['amount'];
+				$number = $number > 0 ? $number : 0;
 				$up_data[$value['Stock']['id']] = [
-					'amount' => $value['Stock']['amount'] - $sale_info[$value['Stock']['id']]['amount'],
+					'amount' => $number,
 				];
 			}
 			// 更新库存
 			return $obj_Stock->update($up_data);
-
 		} else {
 			return false;
 		}
