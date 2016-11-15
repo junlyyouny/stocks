@@ -10,7 +10,7 @@ class StocksController extends Controller {
 	 */
 	public function stock() {
 		$this->set('title', '库存 - 库存管理系统');
-		$curPage = _get('page');
+		$curPage = _get('page', 1);
 		$error_info = '';
 		$page = '';
 		if ($this->isPost()) {
@@ -29,7 +29,7 @@ class StocksController extends Controller {
 		} else {
 			// 非筛选状态下默认展示全部
 			$data = $this->Stock->getPageList('amount > 0 order by id desc', $curPage);
-			if (count($data) > 9) {
+			if ($_SESSION['stocks']['total'] > 1) {
 				$page = $this->page($curPage, $_SESSION['stocks']['total']);
 			}
 			if (empty($data)) {

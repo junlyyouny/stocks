@@ -11,14 +11,14 @@ class SalesController extends Controller {
 	public function index() {
 		$this->set('title','流水 - 库存管理系统');
 		$error_info = '';
-		$curPage = _get('page');
-		$startTime = _get('startTime') ? date('Y-m-d', strtotime(_get('startTime'))) : date('Y-m-d');
-		$endTime = _get('endTime') ? date('Y-m-d 23:59:59', strtotime(_get('endTime'))) : date('Y-m-d 23:59:59');
+		$curPage = _get('page', 1);
+		$startTime = date('Y-m-d', strtotime(_get('startTime', date('Y-m-d'))));
+		$endTime = date('Y-m-d 23:59:59', strtotime(_get('endTime', date('Y-m-d 23:59:59'))));
 		$data = $this->Sale->getPageList('add_time between ' . strtotime($startTime) . ' and ' . strtotime($endTime), $curPage);
-		if (count($data) < 10) {
-			$page = '';
-		} else {
+		if ($_SESSION['sales']['total'] > 1) {
 			$page = $this->page($curPage, $_SESSION['sales']['total']);
+		} else {
+			$page = '';
 		}
 		if (empty($data)) {
 			$error_info = '没有流水信息！';
