@@ -6,5 +6,6 @@ create table stockts
 	amount int(4) unsigned not null COMMENT '库存量',
 	add_time int(11) unsigned not null COMMENT '添加时间',
 	PRIMARY KEY (`id`),
+	KEY `goods_num` (`goods_num`),
 	KEY `bar_code` (`bar_code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='库存表';
