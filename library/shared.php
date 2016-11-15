@@ -39,7 +39,7 @@ function removeMagicQuotes(){
 /**
  * 检测全局变量设置（register globals）并移除他们
  */
-function unregisterGlobals(){
+function unRegisterGlobals(){
     if (ini_get('register_globals')) {
         $array = array('_SESSION','_POST','_GET','_COOKIE','_REQUEST','_SERVER','_ENV','_FILES');
         foreach ($array as $value) {
@@ -57,9 +57,11 @@ function unregisterGlobals(){
  * @param $str
  * @return blend
  */
-function _get($str = '') {
-	$res = empty($_GET[$str]) ? '' : $_GET[$str];
-	return $res;
+function _get($k = null, $default = null) {
+    if ($k === null) {
+        return $_GET;
+    }
+    return isset($_GET[$k]) ? $_GET[$k] : $default;
 }
 
 /**
@@ -67,9 +69,11 @@ function _get($str = '') {
  * @param $str
  * @return blend
  */                                                     
-function _post($str = '') {                              
-    $res = empty($_POST[$str]) ? '' : $_POST[$str];   
-    return $res;                                    
+function _post($k = null, $default = null) {
+    if ($k === null) {
+        return $_POST;
+    }
+    return isset($_POST[$k]) ? $_POST[$k] : $default;                            
 }
 
 /**
@@ -77,9 +81,11 @@ function _post($str = '') {
  * @param $str
  * @return blend
  */                                                     
-function getSession($str = '') {                              
-    $res = empty($_SESSION[$str]) ? '' : $_SESSION[$str];   
-    return $res;                                    
+function getSession($k = null, $default = null) {
+    if ($k === null) {
+        return $_SESSION;
+    }
+    return isset($_SESSION[$k]) ? $_SESSION[$k] : $default;                             
 }
 
 /**
@@ -129,6 +135,6 @@ function __autoload($className) {
  
 setReporting();
 removeMagicQuotes();
-unregisterGlobals();
+unRegisterGlobals();
 session_start();
 callHook();
