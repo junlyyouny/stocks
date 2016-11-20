@@ -35,14 +35,16 @@
 		}
 	});
 	// 时间插件
-	$('.form_date').datetimepicker({
-        language:  'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0
-    });
+	if ($('.form_date').length) {
+		$('.form_date').datetimepicker({
+	        language:  'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });
+	}
 }(jQuery);
