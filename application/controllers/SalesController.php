@@ -24,7 +24,7 @@ class SalesController extends Controller {
 			$error_info = '没有流水信息！';
 		}
 		$this->set('startTime', $startTime);
-		$this->set('endTime', $endTime);
+		$this->set('endTime', date('Y-m-d', strtotime($endTime)));
 		$this->set('errorInfo', $error_info);
 		$this->set('page', $page);
 		$this->set('data', $data);
