@@ -41,10 +41,50 @@ class Controller {
 	 * 控制器跳转
 	 * @return [void]
 	 */
-	public function jump($url) {
+	public function jump($url = '') {
 		echo '<script language="Javascript">';
 		echo 'window.location.href="'.$url.'"';
 		echo '</script>';
+		exit;
+	}
+
+	/**
+	 * 显示信息
+	 * @param  $msg  弹窗口提示信息(为空没有提示)
+ 	 * @param  $type 设置类型 close ，back , refresh ，jump
+ 	 * @param  $url  跳转url
+	 * @return [void]
+	 */
+	public function showMsg($msg = '', $type = '', $url = '') {
+		$js = '<script language="Javascript">';
+		if ($msg) {
+			$js .= 'alert("' . $msg . '");';
+		}
+	    switch ($type) {
+	        case 'close' : 
+	            $js .= 'window.close();';
+	            break;
+	        case 'back' : 
+	            $js .= 'history.back(-1);';
+	            break;
+	        case 'refresh' : 
+	            $js .= 'parent.location.reload();';
+	            break;
+	        case 'top' : 
+	            if ($url) {
+	                $js .= 'top.location.href="' . $url . '";';
+	            }
+	            break;
+	        case 'jump' : 
+	            if ($url) {
+	                $js .= 'window.location.href="' . $url . '";';
+	            }
+	            break;
+	        default :
+	            break;
+	    }
+		$js .= '</script>';
+		echo $js;
 		exit;
 	}
 
@@ -63,7 +103,7 @@ class Controller {
 	 * @param string $url 跳转url地址
 	 * @return [str]
 	 */
-	public function page($page, $pages, $url = '') {
+	public function page($page = 1, $pages = 1, $url = '') {
 		//最多显示多少个页码
 		$_pageNum = 5;
 		//当前页面小于1 则为1

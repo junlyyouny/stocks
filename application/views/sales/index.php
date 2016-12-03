@@ -37,21 +37,30 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>流水号</th>
                             <th>商品编码</th>
                             <th>条形码</th>
                             <th>数量</th>
                             <th>出库时间</th>
+                            <th>操作</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php $i = 1; ?>
                         <?php foreach ($data as $info): ?>
                         <tr>
+                            <td><?php echo $i++; ?></td>
                             <td><?php echo $info['Sale']['id']; ?></td>
                             <td><?php echo $info['Sale']['goods_num']; ?></td>
                             <td><?php echo $info['Sale']['bar_code']; ?></td>
                             <td><?php echo $info['Sale']['amount']; ?></td>
                             <td><?php echo date('Y-m-d H:i:s', $info['Sale']['add_time']); ?></td>
+                            <td>
+                                <a href="/sales/refunds/<?php echo $info['Sale']['id']; ?>" class="do_del" style="text-decoration:none;">
+                                    <span class="label label-danger">退货</span>
+                                </a>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>

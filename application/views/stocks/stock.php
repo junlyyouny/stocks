@@ -26,8 +26,8 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>商品编码</th>
                             <th>库存编号</th>
+                            <th>商品编码</th>
                             <th>条形码</th>
                             <th>库存</th>
                             <th>录入时间</th>
@@ -37,8 +37,8 @@
                     <tbody>
                         <?php foreach ($data as $info): ?>
                         <tr>
-                            <td><?php echo $info['Stock']['goods_num']; ?></td>
                             <td><?php echo $info['Stock']['id']; ?></td>
+                            <td><?php echo $info['Stock']['goods_num']; ?></td>
                             <td><?php echo $info['Stock']['bar_code']; ?></td>
                             <td><?php echo $info['Stock']['amount']; ?></td>
                             <td><?php echo date('Y-m-d H:i:s', $info['Stock']['add_time']); ?></td>

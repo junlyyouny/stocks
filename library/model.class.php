@@ -14,7 +14,7 @@ class Model extends SQLQuery{
 	}
 
 	public function __destruct() {
-	
+		
 	}
 
 	/**

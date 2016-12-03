@@ -43,11 +43,10 @@ class StocksController extends Controller {
 	}
 
 	/**
-	 * 入库列表
+	 * 添加待入库信息
 	 * @return [void]
 	 */
-	public function storage() {
-		$this->set('title', '入库 - 库存管理系统');
+	public function addStorageInfo() {
 		$error_info = '';
 		$goodsNum = _post('goodsNum');
 		if ($this->isPost() && $goodsNum) {
@@ -62,6 +61,24 @@ class StocksController extends Controller {
 				$error_info = '请输入商品编码和条形码！';
 			}
 		}
+		if ($error_info) {
+			$this->set('title', '入库 - 库存管理系统');
+			$this->set('errorInfo', $error_info);
+			$this->set('goodsNum', $goodsNum);
+			$this->set('storageInfo', getSession('storage_info'));
+			$this->template('stocks/storage');
+		} else {
+			$this->jump('/stocks/storage/' . $goodsNum);
+		}
+	}
+
+	/**
+	 * 入库列表
+	 * @return [void]
+	 */
+	public function storage($goodsNum = '') {
+		$this->set('title', '入库 - 库存管理系统');
+		$error_info = '';
 		$this->set('errorInfo', $error_info);
 		$this->set('goodsNum', $goodsNum);
 		$this->set('storageInfo', getSession('storage_info'));

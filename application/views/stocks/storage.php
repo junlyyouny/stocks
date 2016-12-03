@@ -4,7 +4,7 @@
         <div class="col-sm-9 col-sm-offset-2 col-md-10 col-md-offset-1">
             <h1 class="page-header">入库信息</h1>
             <div class="alert-warning error_info <?php if ($errorInfo) echo 'alert'; ?>"><?php echo $errorInfo; ?></div>
-            <form class="form-inline storage_from" role="form" method="post">
+            <form action="/stocks/addStorageInfo" class="form-inline storage_from" role="form" method="post">
                 <div class="form-group">
                     <label class="sr-only" for="goodsNum">商品编码</label>
                     <input type="text" class="form-control" id="goodsNum" name="goodsNum" placeholder="商品编码" value="<?php echo $goodsNum; ?>"></div>
@@ -36,7 +36,7 @@
                     <tbody>
                         <?php foreach ($storageInfo as $key => $info): ?>
                         <tr>
-                            <td><?php echo $key; ?></td>
+                            <td><?php echo $key + 1; ?></td>
                             <td><?php echo $info['goodsNum']; ?></td>
                             <td><?php echo $info['barcode']; ?></td>
                             <td><?php echo $info['addTime']; ?></td>

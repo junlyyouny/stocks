@@ -124,7 +124,7 @@ class SQLQuery {
 			}
 			return $result;
 		}
-		return false;
+		return $this->_result;
 	}
 
 	/**
@@ -140,8 +140,11 @@ class SQLQuery {
 	 * @return [bool]
 	 */
 	public function freeResult() {
-		$this->_result->free();
-		return $this->disconnect();
+		$res = false;
+		if ($this->_result) {
+			$res = $this->_result->free();
+		}
+		return $res;
 	}
 
 	/**

@@ -14,7 +14,7 @@ class SalesController extends Controller {
 		$curPage = _get('page', 1);
 		$startTime = date('Y-m-d', strtotime(_get('startTime', date('Y-m-d'))));
 		$endTime = date('Y-m-d 23:59:59', strtotime(_get('endTime', date('Y-m-d 23:59:59'))));
-		$data = $this->Sale->getPageList('add_time between ' . strtotime($startTime) . ' and ' . strtotime($endTime), $curPage);
+		$data = $this->Sale->getPageList('add_time between ' . strtotime($startTime) . ' and ' . strtotime($endTime) . ' and ' . 'amount > 0', $curPage);
 		if ($_SESSION['sales']['total'] > 1) {
 			$page = $this->page($curPage, $_SESSION['sales']['total']);
 		} else {
@@ -46,7 +46,7 @@ class SalesController extends Controller {
 				$stocksInfo = $this->Sale->getStocksInfo($stocksId, $barcode);
 				if ($stocksInfo) {
 					// 计算销售数量 
-					if ($_SESSION['sale_info'][$stocksInfo['Stock']['id']]) {
+					if (isset($_SESSION['sale_info'][$stocksInfo['Stock']['id']])) {
 						$number = $_SESSION['sale_info'][$stocksInfo['Stock']['id']]['amount'] + 1;
 					} else {
 						$number = 1;
@@ -80,14 +80,18 @@ class SalesController extends Controller {
 	 * @param  [int]  $id
 	 * @return [void]
 	 */
-	public function del($id) {
+	public function del($id = 0) {
 		if ($_SESSION['sale_info'][$id]) {
-			$_SESSION['sale_info'][$id]['number'] -= 1;
-			if ($_SESSION['sale_info'][$id]['number'] < 1) {
-				unset($_SESSION['sale_info'][$id]);
+			$_SESSION['sale_info'][$id]['amount'] -= 1;
+			if ($_SESSION['sale_info'][$id]['amount'] < 1) {
+				if (isset($_SESSION['sale_info'][$id])) {
+					unset($_SESSION['sale_info'][$id]);
+				}
 			}
 		} else {
-			unset($_SESSION['sale_info'][$id]);
+			if (isset($_SESSION['sale_info'][$id])) {
+				unset($_SESSION['sale_info'][$id]);
+			}
 		}
 		$this->jump('/sales/delivering');
 	}
@@ -100,6 +104,22 @@ class SalesController extends Controller {
 		$this->Sale->doSale();
 		unset($_SESSION['sale_info']);
 		$this->jump('/sales/index');
+	}
+
+	/**
+	 * 退货
+	 * @param  [int]  $id 流水号
+	 * @return [void]
+	 */
+	public function refunds($id = 0) {
+		if ($id) {
+			$res = $this->Sale->refunds($id);
+		}
+		if ($res) {
+			$this->showMsg('处理成功', 'jump', '/sales/index');
+		} else {
+			$this->showMsg('处理失败', 'jump', '/sales/index');
+		}
 	}
 
 }

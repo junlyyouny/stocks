@@ -50,4 +50,36 @@ class Sale extends Model {
 			return false;
 		}
 	}
+
+	/**
+	 * 进行退货操作
+	 * @param  [int]  $id 流水号
+	 * @return [bool]
+	 */
+	public function refunds($id = 0) {
+		// 获取流水信息
+		$saleInfo = $this->select($id);
+		if ($saleInfo) {
+			$upStock = false;
+			if ($saleInfo['Sale']['amount']) {
+				// 还原库存
+				$obj_Stock = new Stock;
+				$stocksInfo = $obj_Stock->selectByBarCode($saleInfo['Sale']['bar_code']);
+				if ($stocksInfo) {
+					$up_data[$stocksInfo['Stock']['id']] = [
+						'amount' => $stocksInfo['Stock']['amount'] + $saleInfo['Sale']['amount'],
+					];
+					$upStock = $obj_Stock->update($up_data);
+				}
+			}
+			// 更新流水信息
+			if ($upStock) {
+				$up_sale[$id] = [
+					'amount' => 0,
+				];
+				return $this->update($up_sale);
+			}
+		}
+		return false;
+	}
 }
